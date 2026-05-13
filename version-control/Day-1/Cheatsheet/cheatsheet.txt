@@ -1,0 +1,32 @@
+Adding a new SSH key to your GitHub account
+
+1. Copy the SSH public key to your clipboard.
+   If your SSH public key file has a different name than the example code, modify the filename to match your current setup. When copying your key, don't add any newlines or whitespace.
+   $ pbcopy < ~/.ssh/id_ed25519.pub
+   # Copies the contents of the id_ed25519.pub file to your clipboard
+  Tip: If pbcopy isn't working, you can locate the hidden .ssh folder, open the file in your favorite text editor, and copy it to your clipboard.
+ 
+2. In the upper-right corner of any page, click your profile photo, then click Settings.
+3. In the "Access" section of the sidebar, click  SSH and GPG keys.
+    Click New SSH key or Add SSH key.
+4. In the "Key" field, paste your public key.
+   Click Add SSH key.
+
+
+Generating a new SSH key and adding for  Windows:
+
+Open terminal in git bash.
+1) Then   C:\Users\user>ssh-keygen -t rsa -b 4096 -C "shaiksuhail697@gmail.com"
+
+2) after that  press enter .
+
+3) then C:\Users\user>clip < .ssh/id_rsa.pub
+
+4)then goto settings then open ssh and keys and then paste this key and save.
+
+5) and then open repoin git in browser and then code and then from local take this from ssh https://github.com/ishaaaqh/REACT-JAVA-Fullstack.git
+
+6) then  C:\Users\user>git clone https://github.com/ishaaaqh/REACT-JAVA-Fullstack.git
+
+7) and then list and do cd REACT-JAVA-Fullstack
+  ex:- C:\Users\SADDAM>cd REACT-JAVA-Fullstack
