@@ -1,0 +1,8 @@
+I have installed and configured git.
+
+I have created a repository as git in local.
+
+I have also created  new files in local repo
+and added some changes in repository.
+
+committed changes in git.
