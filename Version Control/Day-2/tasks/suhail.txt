@@ -30,3 +30,5 @@ git merge feature
 
 git merge development
 
+git merge -m feature into main.
+
