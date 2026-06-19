@@ -1,0 +1,32 @@
+Create & Switch Branches
+
+
+1. Create feature branches
+
+git branch feature
+git branch Development
+
+2.Switch branches
+
+git checkout feature
+git checkout development
+git checkout main
+
+3.Create and switch in one command
+
+git checkout -b feature
+git checkout -b development
+
+4.View branches
+
+git branch
+
+
+MERGE OF BRANCHES
+
+Merge two branches using below command.
+
+git merge feature
+
+git merge development
+
