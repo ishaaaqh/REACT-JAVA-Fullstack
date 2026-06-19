@@ -19,7 +19,12 @@ git checkout -b development
 
 4.View branches
 
-git branch
+git branch.
+
+merging into main
+
+git merge feature
+git merge -m feature into main
 
 
 MERGE OF BRANCHES
