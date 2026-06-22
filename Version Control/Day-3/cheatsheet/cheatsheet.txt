@@ -1,53 +1,79 @@
-Branching & Merging
+SSH key setup:
 
-A branch is an independent line of development. It allows you to work on features, bug fixes, or experiments without affecting the main codebase.
+Open terminal in git bash.
+1) Then   C:\Users\dell>ssh-keygen -t rsa -b 4096 -C "Shaiksuhail697@gmail.com"
 
-Create a Branch:
-git branch feature
+2) after that  press enter .
 
-Switch to a Branch:
-git checkout feature
+3) then C:\Users\dell>clip < .ssh/id_rsa.pub
 
-Create and Switch in One Command:
-git checkout -b feature
+4)then goto settings then open ssh and keys and then paste this key and save.
 
-To view branches:
-Git branch
+5) and then open repoin git in browser and then code and then from local take this from ssh git@github.com:ishaaaqh/REACT-JAVA-Fullstack.git
 
-View All Local & Remote Branches:
-git branch -a
+6) then  C:\Users\dell\git\REACT-JAVA-Fullstack.git
 
-
-Merging
-
-Merging combines changes from one branch into another.
-
-merging two branches,
-
-git merge feature/login
-
-git commit -m "Merge feature/login into main"
-
-Delete Merged Branch:
-git branch -d feature/login
-
-Force delete:
-git branch -D feature/login
+7) and then list and do cd REACT-JAVA-Fullstack.
+  ex:- C:\Users\dell\git\REACT-JAVA-Fullstack>cd REACT-JAVA-Fullstack
 
 
-Workflow:
-# Create feature branch
-git checkout -b feature/login
+Push repository to github:
 
-# Work and commit
+Remote repository :- 
+Remote repository is a version of your repository that is hosted somewhere else (for example, on a server or a service such as GitHub, GitLab, or Bitbucket).
+It allows multiple people or machines to share and synchronize code.
+
+1. Create a repository on GitHub
+
+Go to:
+
+GitHub
+
+Create a new repository and copy its URL 
+
+2. Initialize Git (if not already initialized)
+git init
+
+3. Add and commit your files
 git add .
-git commit -m "Add login page"
+git commit -m "Initial commit"
 
-# Move to main
-git checkout main
+4. Add the GitHub repository as a remote
 
-# Merge feature
-git merge feature/login
+Using HTTPS:
 
-# Delete merged branch
-git branch -d feature/login
+git remote add origin https://github.com/<username>/<repository>.git
+
+
+5. Push to GitHub
+
+If your branch is main:
+
+git branch -M main
+git push -u origin main
+
+If your branch is master:
+
+git push -u origin master
+
+6. Verify the remote
+git remote -v
+
+
+Open a pull request:
+
+To open a Pull Request (PR) on GitHub after pushing your branch:
+
+Push your branch to GitHub:
+git push -u origin <branch-name>
+Go to your repository on GitHub.
+
+GitHub will often show a "Compare & pull request" button after you push a branch. Click it.
+Review:
+Base branch: usually main
+Compare branch: your feature branch
+
+Enter:
+A clear title
+A description of the changes
+Click Create pull request.
