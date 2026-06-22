@@ -1,0 +1,28 @@
+Pushing repository to github:
+
+Creating a new repo:
+
+Use command Git init(repository name)
+This command is used to create a new repository
+
+Git Revert:
+
+Git Revert is used to undo specific changes without altering the project's history. Thiscommand creates a new commit that undoes the specified changes.
+ex: $ git revert HEAD
+
+Git reset:
+
+The git reset command is a complex and versatile tool for undoing changes. It has three primary forms of invocation. These forms correspond to command line arguments --soft, --mixed, --hard to rewrite theproject history.
+ex:- git reset --mixed HEAD
+git reset --hard HEAD
+git reset --soft HEAD
+
+Hard: This is the most direct, DANGEROUS, and frequently used option. When passed --hard The Commit History ref pointers are updated to the specified commit. Then, the Staging Index and Working Directory are reset to match that of the specified commit. Any previously pending changes to the Staging Index and the Working Directory gets reset to match the state of the Commit Tree. This means any pending work that was hanging out in the Staging Index and Working Directory will be lost.
+
+Mixed: This is the default operating mode. The ref pointers are updated. The Staging Index is reset to the state of the specified commit. Any changes that have been undone from the Staging Index are moved to the Working Directory. Let us continue.
+
+Soft: When the --soft argument is passed, the ref pointers are updated and the reset stops there. The Staging Index and the Working Directory are left untouched. This behavior can be hard to clearly demonstrate. Let's continue with our demo repo and prepare it for a soft reset.
+
+Git cherry pick:
+
+git cherry-pick is a powerful command that enables arbitrary Git commits to be picked by reference and appended to the current working HEAD. Cherry picking is the act of picking a commit from a branch and applying it to another. git cherry-pick can be useful for undoing changes. For example, say a commit is accidently made to the wrong branch. You can switch to the correct branch and cherry-pick the commit to where it should belong.
