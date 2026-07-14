@@ -1,0 +1,41 @@
+Rewriting History:
+
+-> Git rebase - Git rebase is used to integrate changes from one branch into another by modifying the sarting point of commits.
+
+command :
+
+git checkout main
+git pull origin main
+
+git checkout feature branch
+
+git rebase main.
+
+-> Git merge - It integrates changes from one git branch into your currently active branch.
+
+command : 
+
+Git merge feature-branch-name
+
+
+-> Git Reset - Git reset is a command used to undo local changes by moving the current branch pointer to a specific previous commit.
+
+command :
+
+Git reset <file-name>
+
+-> Git Revert - git revert is a command that creates a new commit that records the exact inverse changes of a targeted previous commit.
+
+command :
+
+Git revert HEAD - to undo latest commit
+
+Git revert <commit-has> to undo specific past commit.
+
+-> Git Stash - Git stash tenporarily saves uncommitted modifications in working directory to switch contexts or branches without committing incomplete work.
+
+command :
+
+Git Stash - Saves your tracked, uncommitted changes
+
+Git stash pop - apllies the most recent stash to working directory but keeps it saved in the stack.
