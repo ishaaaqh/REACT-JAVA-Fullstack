@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-Git tasks-2
-
-checking task.
-=======
 Task - 1 
 
 Git rebase Vs Git merge 
@@ -11,7 +6,12 @@ Git rebase : This command used to integrate changes form one branch to another b
 
 Git merge : This command used to combines independent lines of development from a source branch into your current target branch.
 
-commands : git rebase
+commands : git rebase, git merge.
 
-git merge
->>>>>>> module1-day-4-suhail-tasks
+Git reset : This command moves the current branch to a different commit. Depending on the option we use, it can also unstage changes or discard them.
+
+Command : Git reset.
+
+Git revert : It is used to undo the changes introduced by a commit by creating a new commit. Unlike 'git reset', it does not rewrite history, making it the preferred option for commits that have already been pushed to a shared repository.
+
+Command : Git revert.
