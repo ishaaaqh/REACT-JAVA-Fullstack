@@ -1,12 +1,12 @@
-Task - 1 
-
-Git rebase Vs Git merge 
+Tasks
 
 Git rebase : This command used to integrate changes form one branch to another by rewriting the commit history.
 
+Command : Git Rebase
+
 Git merge : This command used to combines independent lines of development from a source branch into your current target branch.
 
-commands : git rebase, git merge.
+command : git rebase
 
 Git reset : This command moves the current branch to a different commit. Depending on the option we use, it can also unstage changes or discard them.
 
