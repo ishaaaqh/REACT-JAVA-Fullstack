@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Hi ,
 
 commit -1
@@ -5,3 +6,10 @@ commit -1
 commit -3
 
 commit -5
+=======
+Hi,
+
+Commit -2
+
+commit -4
+>>>>>>> module1-day-4-suhail-task-merge2
