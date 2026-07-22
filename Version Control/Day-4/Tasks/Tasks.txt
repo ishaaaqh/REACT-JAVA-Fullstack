@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 This is world
 New movie
+=======
+Hello world
+New task
+End.
+>>>>>>> 40f0e2c (commit-5)
