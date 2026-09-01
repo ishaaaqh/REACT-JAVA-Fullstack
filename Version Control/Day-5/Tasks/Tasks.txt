@@ -1,0 +1,407 @@
+GIT PRACTICE TASKS — ANSWERS
+
+
+TASK 1 — CREATE ANNOTATED TAGS
+------------------------------
+
+Goal:
+Tag repo commits as v1.0.0 and v1.1.0 and push the tags to GitHub.
+
+Step 1: Check the current status
+
+    git status
+
+Step 2: View recent commits
+
+    git log --oneline --decorate -10
+
+Step 3: Create the first annotated tag
+
+    git tag -a v1.0.0 -m "Release v1.0.0"
+
+This creates an annotated tag on the current commit.
+
+Step 4: Create the second annotated tag
+
+If v1.1.0 should point to a later commit, make/checkout the desired commit
+first, then run:
+
+    git tag -a v1.1.0 -m "Release v1.1.0"
+
+For example:
+
+    git log --oneline
+    git tag -a v1.1.0 <commit-hash> -m "Release v1.1.0"
+
+Step 5: Verify tags
+
+    git tag
+    git show v1.0.0
+    git show v1.1.0
+
+Step 6: Push both tags to GitHub
+
+    git push origin v1.0.0
+    git push origin v1.1.0
+
+Or push all local tags:
+
+    git push origin --tags
+
+RESULT:
+GitHub will have tags v1.0.0 and v1.1.0 pointing to the selected commits.
+
+NOTE:
+An annotated tag is preferred for releases because it stores a tag message,
+tagger information, and date.
+
+
+TASK 2 — PRACTICE CHERRY-PICK
+-----------------------------
+
+Goal:
+Create 3 commits on a feature branch, then cherry-pick ONLY the 2nd commit
+to main.
+
+Step 1: Start from main and create a feature branch
+
+    git switch main
+    git switch -c feature/cherry-pick-demo
+
+Step 2: Create commit 1
+
+Create/edit a file, for example:
+
+    echo "Commit 1" > cherry1.txt
+
+Then:
+
+    git add .
+    git commit -m "Add cherry-pick demo commit 1"
+
+Step 3: Create commit 2
+
+    echo "Commit 2" > cherry2.txt
+    git add .
+    git commit -m "Add cherry-pick demo commit 2"
+
+Step 4: Create commit 3
+
+    echo "Commit 3" > cherry3.txt
+    git add .
+    git commit -m "Add cherry-pick demo commit 3"
+
+Step 5: View the commits
+
+    git log --oneline --decorate -3
+
+You should see something similar to:
+
+    <commit3> Add cherry-pick demo commit 3
+    <commit2> Add cherry-pick demo commit 2
+    <commit1> Add cherry-pick demo commit 1
+
+Copy the hash of COMMIT 2.
+
+Step 6: Switch to main
+
+    git switch main
+
+Step 7: Cherry-pick ONLY commit 2
+
+    git cherry-pick <commit2-hash>
+
+Step 8: Verify
+
+    git log --oneline --decorate -5
+
+Only the changes from commit 2 should now exist on main.
+
+IMPORTANT:
+Cherry-pick creates a NEW commit on the target branch. It does not move the
+original commit from the feature branch.
+
+If a conflict occurs:
+
+    git status
+    # Resolve the conflicted files
+    git add .
+    git cherry-pick --continue
+
+To cancel the cherry-pick:
+
+    git cherry-pick --abort
+
+
+TASK 3 — BUG HUNT WITH GIT BISECT
+---------------------------------
+
+Goal:
+Have 20 commits, introduce a bug in commit 10, and use git bisect to find
+the first bad commit.
+
+CONCEPT:
+Git bisect uses binary search. You tell Git one known-good commit and one
+known-bad commit, and Git checks out commits in between so you can test them.
+
+STEP 1: Create 20 commits
+
+You can create a demo file and make one commit at a time.
+
+Example:
+
+    echo "commit 1" > bisect-demo.txt
+    git add .
+    git commit -m "Commit 1"
+
+Then continue similarly through commit 20.
+
+A simple PowerShell-friendly approach is:
+
+    1..20 | ForEach-Object {
+        "Commit $_" | Out-File bisect-demo.txt
+        git add bisect-demo.txt
+        git commit -m "Commit $_"
+    }
+
+STEP 2: Introduce the bug in commit 10
+
+For a realistic exercise, make the application/test fail at commit 10.
+For example, change a calculation or function so that the expected test
+result becomes incorrect.
+
+IMPORTANT:
+The bug must remain present in commits 10 through 20 and must not exist in
+commits 1 through 9.
+
+If you are creating a simple demonstration, commit 10 can contain the
+intentional broken change.
+
+STEP 3: Start bisect
+
+    git bisect start
+
+STEP 4: Mark the current commit as bad
+
+If HEAD is commit 20:
+
+    git bisect bad
+
+STEP 5: Mark a known-good commit
+
+Use a commit before the bug, such as commit 9:
+
+    git bisect good <commit-9-hash>
+
+Git will check out a commit in the middle of the range.
+
+STEP 6: Test the checked-out commit
+
+Ask:
+"Does the bug exist in this commit?"
+
+If YES:
+
+    git bisect bad
+
+If NO:
+
+    git bisect good
+
+Repeat the test and command each time Git checks out another commit.
+
+STEP 7: Finish
+
+Git will eventually report something similar to:
+
+    <hash> is the first bad commit
+
+Then inspect it:
+
+    git show <hash>
+
+STEP 8: Exit bisect mode
+
+    git bisect reset
+
+IMPORTANT ABOUT "< 5 STEPS":
+With a range of 20 commits, a binary search may require up to about
+ceil(log2(20)) = 5 test decisions in the worst case. If the exercise says
+"< 5 steps", the exact number depends on where the bug is and which commit
+Git selects first. If commit 10 is the first bad commit, the first midpoint
+may be close to commit 10, making the demonstration very quick.
+
+AUTOMATED BISECT:
+If you have a script that exits 0 for GOOD and non-zero for BAD, you can use:
+
+    git bisect start
+    git bisect bad HEAD
+    git bisect good <known-good-commit>
+    git bisect run <test-command>
+
+Example:
+
+    git bisect run npm test
+
+The command must return:
+    0     = good
+    non-zero = bad
+
+
+TASK 4 — WRITE A PRE-COMMIT HOOK
+--------------------------------
+
+Goal:
+Create .git/hooks/pre-commit that blocks commits containing TODO in code.
+
+IMPORTANT:
+The hook is local to the repository.
+
+STEP 1: Go to the repository
+
+    cd path/to/your/repository
+
+STEP 2: Create the hook
+
+In Git Bash:
+
+    touch .git/hooks/pre-commit
+
+Open the file and add:
+
+    #!/bin/sh
+
+    if git diff --cached --diff-filter=ACM | grep -n "TODO" >/dev/null 2>&1
+    then
+        echo "ERROR: TODO found in staged code."
+        echo "Commit blocked. Remove TODO before committing."
+        exit 1
+    fi
+
+    exit 0
+
+STEP 3: Make the hook executable (Git Bash/Linux/macOS)
+
+    chmod +x .git/hooks/pre-commit
+
+On Windows with Git Bash, this normally works as well.
+
+STEP 4: Test the hook
+
+Put TODO in a file:
+
+    echo "// TODO: fix this" >> test.js
+
+Stage it:
+
+    git add test.js
+
+Try to commit:
+
+    git commit -m "Test pre-commit hook"
+
+The commit should be blocked.
+
+STEP 5: Remove TODO
+
+Edit test.js and remove the TODO.
+
+Then:
+
+    git add test.js
+    git commit -m "Remove TODO"
+
+The commit should now succeed.
+
+WHAT THE HOOK DOES:
+- git diff --cached checks staged changes.
+- grep searches those changes for TODO.
+- exit 1 tells Git to stop the commit.
+- exit 0 allows the commit.
+
+IMPORTANT:
+If you specifically want to scan only source-code extensions rather than
+every staged text change, the hook can be made more advanced. This basic
+version is suitable for learning the pre-commit concept.
+
+If Git opens a commit-message editor and you want to avoid Vim:
+
+    git commit -m "Your commit message"
+
+
+TASK 5 — EXPLORE SUBMODULES
+---------------------------
+
+Goal:
+Add a public GitHub repository as a submodule, clone the parent repository,
+and update the submodule.
+
+For this practice, use this public repository as an example:
+
+    https://github.com/octocat/Spoon-Knife.git
+
+STEP 1: Add the submodule
+
+From your parent repository:
+
+    git submodule add https://github.com/octocat/Spoon-Knife.git external/Spoon-Knife
+
+This creates:
+- external/Spoon-Knife/   -> the submodule working directory
+- .gitmodules             -> configuration describing the submodule
+
+STEP 2: Check status
+
+    git status
+    git submodule status
+
+STEP 3: Commit the submodule configuration
+
+    git add .gitmodules external/Spoon-Knife
+    git commit -m "Add Spoon-Knife as submodule"
+
+STEP 4: Push the parent repository
+
+    git push origin <your-branch>
+
+NOTE:
+The parent repository stores a specific commit reference for the submodule.
+It does not copy the submodule's complete Git history into the parent repo.
+
+STEP 5: Clone the parent repository elsewhere
+
+Recommended:
+
+    git clone --recurse-submodules <parent-repository-url>
+
+If you already cloned the parent without its submodules:
+
+    git submodule update --init --recursive
+
+STEP 6: Check the submodule
+
+    git submodule status
+
+STEP 7: Update the submodule
+
+To update it according to its configured remote-tracking branch:
+
+    git submodule update --remote --merge
+
+Then check:
+
+    git status
+
+If the submodule moved to a new commit, the parent repository will show the
+submodule directory as modified.
+
+STEP 8: Commit the updated submodule reference
+
+    git add external/Spoon-Knife
+    git commit -m "Update Spoon-Knife submodule"
+    git push
+
+IMPORTANT:
+Updating a submodule does not automatically create a normal source-code
+change in the parent repository. The parent records which submodule commit
+it should use.
