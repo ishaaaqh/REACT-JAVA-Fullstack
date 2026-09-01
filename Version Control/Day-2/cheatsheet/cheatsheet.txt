@@ -1,0 +1,53 @@
+Branching & Merging
+
+A branch is an independent line of development. It allows you to work on features, bug fixes, or experiments without affecting the main codebase.
+
+Create a Branch:
+git branch feature
+
+Switch to a Branch:
+git checkout feature
+
+Create and Switch in One Command:
+git checkout -b feature
+
+To view branches:
+Git branch
+
+View All Local & Remote Branches:
+git branch -a
+
+
+Merging
+
+Merging combines changes from one branch into another.
+
+merging two branches,
+
+git merge feature/login
+
+git commit -m "Merge feature/login into main"
+
+Delete Merged Branch:
+git branch -d feature/login
+
+Force delete:
+git branch -D feature/login
+
+
+Workflow:
+# Create feature branch
+git checkout -b feature/login
+
+# Work and commit
+git add .
+git commit -m "Add login page"
+
+# Move to main
+git checkout main
+
+# Merge feature
+git merge feature/login
+
+# Delete merged branch
+git branch -d feature/login
