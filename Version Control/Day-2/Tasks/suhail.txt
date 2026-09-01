@@ -17,7 +17,7 @@ git checkout main
 git checkout -b feature
 git checkout -b development
 
-4.View branches
+4.View branches,
 
 git branch
 

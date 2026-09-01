@@ -49,5 +49,5 @@ git checkout main
 # Merge feature
 git merge feature/login
 
-# Delete merged branch
-git branch -d feature/login
+# Delete merged branch,
+git branch -d feature/login.
