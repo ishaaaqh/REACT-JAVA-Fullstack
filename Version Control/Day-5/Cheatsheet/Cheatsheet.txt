@@ -1,0 +1,220 @@
+GIT CHEATSHEET
+Topics: Git Tags & Releases, Cherry-pick, Bisect, Hooks, Submodules
+
+1. GIT TAGS
+----------
+
+A tag is a fixed name/reference for a specific commit. Tags are commonly used
+to mark versions such as v1.0.0, v2.0.0, etc.
+
+List tags:
+    git tag
+
+Create a lightweight tag:
+    git tag v1.0.0
+
+Create an annotated tag (recommended for releases):
+    git tag -a v1.0.0 -m "Release version 1.0.0"
+
+Show tag details:
+    git show v1.0.0
+
+Tag a specific commit:
+    git tag -a v1.0.0 <commit-hash> -m "Release version 1.0.0"
+
+Delete a local tag:
+    git tag -d v1.0.0
+
+Push one tag to remote:
+    git push origin v1.0.0
+
+Push all tags:
+    git push origin --tags
+
+Delete a remote tag:
+    git push origin --delete v1.0.0
+
+Checkout a tag:
+    git checkout v1.0.0
+
+Create a branch from a tag:
+    git switch -c release-fix v1.0.0
+
+Useful:
+    git tag -l "v1.*"
+    git describe --tags
+
+IMPORTANT:
+- Tags normally point to a specific commit.
+- Tags are not automatically pushed with normal git push.
+- Annotated tags contain metadata such as tagger, date, and message.
+
+
+2. GIT RELEASES
+--------------
+
+A Git release is a published version of your project, usually associated
+with a Git tag. On GitHub, a Release can include release notes and downloadable
+assets.
+
+Typical release workflow:
+    git status
+    git switch main
+    git pull
+    git tag -a v1.0.0 -m "Release v1.0.0"
+    git push origin v1.0.0
+
+Version naming examples:
+    v1.0.0  -> major.minor.patch
+    v1.1.0  -> new backward-compatible feature
+    v1.1.1  -> bug fix
+    v2.0.0  -> breaking change
+
+TAG vs RELEASE:
+- Tag = Git reference pointing to a commit.
+- Release = a published project version, often built around a tag.
+- A release can contain notes, binaries, and other downloadable files.
+
+
+3. GIT CHERRY-PICK
+------------------
+
+Cherry-pick copies the changes introduced by a specific commit and applies
+them to your current branch.
+
+Basic usage:
+    git switch target-branch
+    git cherry-pick <commit-hash>
+
+Example:
+    git switch main
+    git cherry-pick a1b2c3d
+
+Cherry-pick multiple commits:
+    git cherry-pick <commit1> <commit2>
+
+Cherry-pick a range:
+    git cherry-pick <oldest-commit>^..<newest-commit>
+
+Continue after resolving a conflict:
+    git add .
+    git cherry-pick --continue
+
+Abort cherry-pick:
+    git cherry-pick --abort
+
+Skip the current commit:
+    git cherry-pick --skip
+
+Useful:
+    git log --oneline
+
+IMPORTANT:
+- Cherry-pick creates a new commit on the current branch.
+- It does NOT move the original commit.
+- It is useful when you need one/few changes without merging an entire branch.
+
+MERGE vs CHERRY-PICK:
+- merge -> combines branch histories.
+- cherry-pick -> copies selected commit changes into the current branch.
+
+
+4. GIT BISECT
+-------------
+
+Git bisect helps find which commit introduced a bug by using binary search.
+
+Start:
+    git bisect start
+
+Mark current commit as bad:
+    git bisect bad
+
+Mark a known-good commit:
+    git bisect good <commit-hash>
+
+Git checks out a commit in the middle of the range.
+
+Test the application:
+- If the bug exists:
+      git bisect bad
+- If the bug does not exist:
+      git bisect good
+
+Repeat until Git identifies the first bad commit.
+
+Finish:
+    git bisect reset
+
+Typical workflow:
+    git bisect start
+    git bisect bad HEAD
+    git bisect good v1.0.0
+
+After Git identifies the commit:
+    git show <commit-hash>
+
+IMPORTANT:
+- Bisect is most useful when you can reliably say "bug exists" or
+  "bug does not exist."
+- It reduces the number of commits to test from roughly N to log2(N).
+
+
+5. GIT HOOKS
+------------
+
+Git hooks are scripts that run automatically at specific points in Git's
+workflow.
+
+Hooks are stored in:
+    .git/hooks/
+
+Common hooks:
+
+Client-side:
+    pre-commit       -> runs before a commit is created
+    commit-msg       -> validates the commit message
+    post-commit      -> runs after a commit
+    pre-push         -> runs before pushing
+    post-checkout    -> runs after checkout/switch
+    post-merge       -> runs after a successful merge
+
+Server-side:
+    pre-receive      -> runs before refs are accepted
+    update           -> runs for each ref being updated
+    post-receive     -> runs after refs are updated
+
+Example pre-commit hook:
+    #!/bin/sh
+    npm test
+
+A hook can prevent a Git operation by exiting with a non-zero status.
+
+Enable a hook:
+1. Create/edit the hook in .git/hooks/
+2. Give it executable permission where required.
+3. Make sure it has the correct script format.
+
+IMPORTANT:
+- Hooks are local by default and are not transferred by normal git clone.
+- For team projects, tools such as Husky can help manage shared Git hooks.
+
+
+6. GIT SUBMODULES
+-----------------
+
+A submodule lets one Git repository include another Git repository as a
+directory.
+
+Add a submodule:
+    git submodule add <repository-url> path/to/submodule
+
+Example:
+    git submodule add https://example.com/library.git libs/library
+
+Initialize and clone submodules:
+    git clone --recurse-submodules <repository-url>
+
+If already cloned:
+    git submodule init
+    git submodule update
